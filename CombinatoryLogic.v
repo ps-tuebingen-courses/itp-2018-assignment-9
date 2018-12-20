@@ -18,7 +18,7 @@ Example example_type2 : Types := (Nat ==> Nat) ==> Nat.
 Inductive Expr : Types ->  Type :=
 (*| K : ... *)
 | S : forall {x y z : Types}, Expr ((x ==> (y ==> z)) ==> (x ==> y) ==> (x ==> z))
-(* | O : ... *)
+(*| O : ... *)
 | Succ : Expr (Nat ==> Nat)
 | iterate : forall {x : Types}, Expr (Nat ==> (x ==> x) ==> x ==> x)
 | App : forall {x y : Types}, Expr (x ==> y) -> Expr x -> Expr y. 
@@ -34,9 +34,9 @@ Example four : Expr Nat := Succ @ (Succ @ (Succ @ (Succ @ O))).
    Coq to work. *)
 Example I :forall (t : Types), Expr (t ==> t) := fun t =>  S @ K @ (@K t t).
 
-(* The reduction semantics is given by the following inductive relation. Observe that the
-  type of the relation guarantees that the reduction does not change the type of
-  the expression. *)
+(* The reduction semantics is given by the following inductive relation.
+   Observe that the type of the relation guarantees that the reduction
+   does not change the type of the expression. *)
 
 (* Task 2: Extend the evaluate relation with the missing cases for S and iterate succ *)
 Inductive evaluate : forall (x : Types), Expr x -> Expr x -> Prop :=
@@ -50,8 +50,8 @@ Inductive evaluate : forall (x : Types), Expr x -> Expr x -> Prop :=
     evaluate t1
              (K @ e1 @ e2)
              e1
-(* | eval_S : ... *)
-(* | eval_iterate_succ : .... *)
+(*| eval_S : ... *)
+(*| eval_iterate_succ : *)
 | eval_iterate_zero : forall (t : Types) (f : Expr ( t ==> t)) (ex : Expr t),
     evaluate t
              (iterate @ O @  f @ ex)
@@ -73,11 +73,10 @@ Proof.
   admit.
 Admitted.
 
-
 (* Task 4a: The constant K takes two arguments, and ignores its second argument.
    Write an expression K' which takes two arguments and ignores its first argument.
-   Hint: You should solve this exercise on paper first. This one is a puzzle ;) *)
-Definition K' : forall {t1 t2 : Types},  Expr (t1 ==> t2 ==> t2) := (* ... *).
+   Hint: You should solve this exercise on paper first. *)
+Definition K' : forall {t1 t2 : Types},  Expr (t1 ==> t2 ==> t2) := (* TODO *)
 
 (* Task 4b: Prove that your construction for K' works. *)
 Lemma K'_works : forall (t1 t2 : Types) (e1 : Expr t1) (e2 : Expr t2),
@@ -86,9 +85,9 @@ Proof.
   admit.
 Admitted.
 
-(* Task 5a: Define an expression of type "Nat ==> Nat" which applied to a
-   natural number evaluates to that number + 2. *)
-Definition plus_two : Expr (Nat ==> Nat) := (* ... *).
+(* Task 5a: Define an expression of type "Nat ==> Nat" which applied
+   to a natural number evaluates to that number + 2. *)
+Definition plus_two : Expr (Nat ==> Nat) := (* TODO *).
 
 (* Task 5b: Prove that your construction works. *)
 Lemma plus_two_works : evaluate_tr Nat (plus_two @ O) two.
@@ -96,10 +95,9 @@ Proof.
   admit.
 Admitted.
 
-
-(* Task 6a: Define an expression of type "Nat ==> Nat" which applied to a
-   natural number doubles that number. *)
-Definition double : Expr (Nat ==> Nat) := (* ... *).
+(* Task 6a: Define an expression of type "Nat ==> Nat" which applied
+   to a natural number doubles that number. *)
+Definition double : Expr (Nat ==> Nat) := (* TODO *).
 
 (* Task 6b: Prove your construction correct. *)
 Lemma double_works : evaluate_tr Nat (double @ one) two.
